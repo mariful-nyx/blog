@@ -6,6 +6,9 @@ from bpm.comment.api.v1.serializer import CommentSerializer
 
 
 class UserSerializer(serializers.ModelSerializer):
+    posts = serializers.SerializerMethodField()
+    comments = serializers.SerializerMethodField()
+
     
     class Meta:
         model = User
@@ -17,8 +20,19 @@ class UserSerializer(serializers.ModelSerializer):
             "last_name",
             "avater",
             "date_joined",
-            "role"
+            "role",
+            "posts",
+            "comments",
+            "status",
+            "profession",
+            "university"
         ]
+    
+    def get_posts(self, obj):
+        return obj.posts.count()
+    
+    def get_comments(self, obj):
+        return obj.comments.count()
 
 
 class UserDetailSerializer(serializers.ModelSerializer):
@@ -41,5 +55,8 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "is_superuser",
             "posts",
             "comments",
-            "role"
+            "role",
+            "status",
+            "profession",
+            "university"
         ]

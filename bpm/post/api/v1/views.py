@@ -14,11 +14,11 @@ import django_filters
 
 
 class PostFilter(filters.FilterSet):
-    title = filters.CharFilter(field_name='title', lookup_expr='iexact')
-    description = filters.CharFilter(field_name='description', lookup_expr='iexact')
-    first_name = filters.CharFilter(field_name='user__first_name', lookup_expr='iexact')
-    last_name = filters.CharFilter(field_name='user__last_name', lookup_expr='iexact')
-    username = filters.CharFilter(field_name='user__username', lookup_expr='iexact')
+    title = filters.CharFilter(field_name='title', lookup_expr='icontain')
+    description = filters.CharFilter(field_name='description', lookup_expr='icontain')
+    first_name = filters.CharFilter(field_name='user__first_name', lookup_expr='icontain')
+    last_name = filters.CharFilter(field_name='user__last_name', lookup_expr='icontain')
+    username = filters.CharFilter(field_name='user__username', lookup_expr='icontain')
     created_at = filters.DateFromToRangeFilter(field_name='created_at')
     updated_at = filters.DateFromToRangeFilter(field_name='updated_at')
     category = filters.CharFilter(field_name='category__name', lookup_expr='icontains')
