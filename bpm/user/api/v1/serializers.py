@@ -60,3 +60,27 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "profession",
             "university"
         ]
+
+
+class SignUpSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['username', 'password', 'email']
+    
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError("Passwords must match")
+        return data
+    
+    def create(self, validated_data):
+        user = User.objects.create_user(
+            username=validated_data['username'],
+            password=validated_data['password'],
+            email=validated_data['email'],
+        )
+        return user
+    
+
+class LoginSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    password = serializers.CharField(write_only=True)
