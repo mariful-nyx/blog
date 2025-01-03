@@ -34,7 +34,9 @@ class Command(BaseCommand):
                     last_name=faker.last_name(),
                     username=faker.user_name(),
                     email=faker.email(),
-                    avater=faker.image_url()  # Check if 'avater' is the intended field name
+                    status=faker.sentences(),
+                    profession=faker.name(),
+                    university=faker.sentence()
                 )
 
                 # Create tag
