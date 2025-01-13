@@ -1,6 +1,8 @@
 from rest_framework import generics, viewsets
 from bpm.category.models import Category
-from bpm.category.api.v1.seralizers import CategorySerializer, CategoryWithPostsSerializer, CategoryCreateSerializer
+from bpm.category.api.v1.seralizers import CategorySerializer, CategoryWithPostsSerializer, CategoryCreateSerializer, SubSubCategorySerializer
+from bpm.category.models import SubSubCategory
+
 
 class CategoryModelViewSet(viewsets.ModelViewSet):
     serializer_class = CategorySerializer
