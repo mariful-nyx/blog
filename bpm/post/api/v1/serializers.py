@@ -2,6 +2,8 @@ from rest_framework import serializers
 from bpm.post.models import Post
 from bpm.category.api.v1.seralizers import CategorySerializer
 from bpm.tag.api.v1.serializers import TagSerializer
+from bpm.tag.models import Tag
+from bpm.category.models import SubSubCategory
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -9,7 +11,6 @@ class PostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        
         fields = [
             'id',
             'user',
@@ -79,7 +80,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
-    
+
     class Meta:
         model = Post
         fields = [
@@ -96,3 +97,25 @@ class PostCreateSerializer(serializers.ModelSerializer):
             'meta_description',
             'slug',
         ]
+        read_only_fields = ['user']
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        validated_data['user'] = request.user
+
+        tag_payload = validated_data['tag']
+        category_payload = validated_data['category']
+        tags = []
+
+        for tag in tag_payload:
+            tag_instance = Tag.objects.create(
+                name=tag
+            )
+            tags.append(tag_instance)
+
+        validated_data['tag'] = tags
+        category_instance = SubSubCategory.objects.get(category_payload)
+        validated_data['category'] = category_instance
+
+        return super().create(validated_data)
+       

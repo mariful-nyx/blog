@@ -9,4 +9,3 @@ router.register(r'categories', views.CategoryModelViewSet)
 
 urlpatterns = router.urls
 
-

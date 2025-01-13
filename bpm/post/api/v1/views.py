@@ -1,6 +1,7 @@
 from rest_framework import viewsets, generics
 from rest_framework.response import Response
 from rest_framework import filters as drf_filter
+from rest_framework.permissions import IsAuthenticated
 from django_filters import rest_framework as filters
 
 # Your Models and Serializers
@@ -52,9 +53,9 @@ class PostsViewSet(PostFilterMixin, viewsets.ModelViewSet):
     lookup_field = 'slug'
 
     def get_serializer_class(self):
-        if self.request.method == "POST":
-            return PostCreateSerializer
-        elif self.action == "retrieve":
+        # if self.request.method == "POST":
+        #     return PostCreateSerializer
+        if self.action == "retrieve":
             return PostDetailSerializer
         return PostSerializer
 
@@ -66,3 +67,9 @@ class PostsViewSet(PostFilterMixin, viewsets.ModelViewSet):
         else:
             self.pagination_class = BPMPagination
             self.queryset = Post.objects.all()
+
+
+class PostCreateView(generics.CreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PostCreateSerializer
+    permission_classes = [IsAuthenticated]

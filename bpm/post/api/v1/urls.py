@@ -8,3 +8,7 @@ router = DefaultRouter()
 router.register(r'posts', post_views.PostsViewSet, basename='post')
 
 urlpatterns = router.urls
+
+urlpatterns += [
+    path('post-create/', post_views.PostCreateView.as_view(), name='post-create')
+]

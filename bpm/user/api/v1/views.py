@@ -11,6 +11,8 @@ from django_filters import rest_framework as filters
 import django_filters
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
+from rest_framework.permissions import IsAuthenticated
+
 
 class UserFilter(filters.FilterSet):
     first_name = filters.CharFilter(field_name='first_name', lookup_expr='icontain')
@@ -79,3 +81,10 @@ class LoginView(APIView):
             return Response({'error': 'Invalid credentials'}, status=status.HTTP_401_UNAUTHORIZED)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class ProtectedView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, *args, **kwargs):
+        return Response({"message": "You have access to this protected endpoint!"}, status=status.HTTP_200_OK)
