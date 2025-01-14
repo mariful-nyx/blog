@@ -41,10 +41,10 @@ urlpatterns = [
     path('bpm/post/api/v1/', include('bpm.post.api.v1.urls')),
     # path('bpm/comment/api/v1/', include('bpm.comment.api.v1.urls')),
     path('bpm/user/api/v1/', include('bpm.user.api.v1.urls')),
-    # path('bpm/tag/api/v1/', include('bpm.tag.api.v1.urls')),
+    path('bpm/tag/api/v1/', include('bpm.tag.api.v1.urls')),
 
     path('bpm/category/api/v1/', include('bpm.category.api.v1.urls')),
-
+    path('bpm/filemanager/api/v1/', include('bpm.filemanager.api.v1.urls')),
 
     path('', schema_view.with_ui('swagger', cache_timeout=0), name='swagger-ui'),  # Swagger UI
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),  # Optional, for auto-generated docs

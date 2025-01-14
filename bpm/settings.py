@@ -48,7 +48,8 @@ LOCAL_APPS = [
     'bpm.comment',
     'bpm.user',
     'bpm.tag',
-    'bpm.category'
+    'bpm.category',
+    'bpm.filemanager'
 ]
 
 THIRD_PARTY_APPS = [
@@ -71,6 +72,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+
 
 ROOT_URLCONF = 'bpm.urls'
 

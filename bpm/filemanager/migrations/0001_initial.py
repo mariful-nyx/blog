@@ -12,15 +12,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Comment',
+            name='Image',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now=True)),
-                ('updated_at', models.DateTimeField(auto_now_add=True)),
-                ('comment', models.TextField()),
+                ('image', models.ImageField(upload_to='thumbnail')),
+                ('image_alt_text', models.CharField(max_length=255)),
             ],
-            options={
-                'abstract': False,
-            },
         ),
     ]

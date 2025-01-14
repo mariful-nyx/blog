@@ -53,8 +53,6 @@ class PostsViewSet(PostFilterMixin, viewsets.ModelViewSet):
     lookup_field = 'slug'
 
     def get_serializer_class(self):
-        # if self.request.method == "POST":
-        #     return PostCreateSerializer
         if self.action == "retrieve":
             return PostDetailSerializer
         return PostSerializer
@@ -69,7 +67,7 @@ class PostsViewSet(PostFilterMixin, viewsets.ModelViewSet):
             self.queryset = Post.objects.all()
 
 
-class PostCreateView(generics.CreateAPIView):
+class PostCreateView(generics.ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostCreateSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]

@@ -67,11 +67,6 @@ class SignUpSerializer(serializers.ModelSerializer):
         model = User
         fields = ['username', 'password', 'email']
     
-    def validate(self, data):
-        if data['password'] != data['password2']:
-            raise serializers.ValidationError("Passwords must match")
-        return data
-    
     def create(self, validated_data):
         user = User.objects.create_user(
             username=validated_data['username'],
