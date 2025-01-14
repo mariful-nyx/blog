@@ -22,3 +22,5 @@ class NameDescAbstract(models.Model):
 
     class Meta:
         abstract=True
+
+

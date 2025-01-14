@@ -53,6 +53,7 @@ class Command(BaseCommand):
                 post = Post.objects.create(
                     title=faker.sentence(),
                     description=faker.text(),
+                    
                     user=user,
                     meta_title=faker.sentence(),
                     meta_description=faker.sentences(),

@@ -4,10 +4,14 @@ from bpm.category.api.v1.seralizers import CategorySerializer
 from bpm.tag.api.v1.serializers import TagSerializer
 from bpm.tag.models import Tag
 from bpm.category.models import SubSubCategory
+from bpm.user.models import User
+from django.db import transaction
+
 
 
 class PostSerializer(serializers.ModelSerializer):
     posted_by = serializers.SerializerMethodField()
+    thumbnail_img = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -16,6 +20,7 @@ class PostSerializer(serializers.ModelSerializer):
             'user',
             'posted_by',
             'thumbnail',
+            'thumbnail_img',
             'title',
             'description',
             'created_at',
@@ -25,6 +30,13 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_posted_by(self, obj):
         return obj.user.username
+    
+    def get_thumbnail_img(self, obj):
+        request = self.context.get('request')
+
+        if obj.thumbnail:
+            return request.build_absolute_uri(obj.thumbnail.image.url)
+        return None
 
 
 class PostDetailSerializer(serializers.ModelSerializer):
@@ -35,6 +47,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
     liked_users = serializers.SerializerMethodField()
     posted_by = serializers.SerializerMethodField()
     related_article = PostSerializer(many=True, read_only=True)
+    thumbnail_img = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -44,6 +57,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
             'user',
             'posted_by',
             'thumbnail',
+            'thumbnail_img',
             'title',
             'description',
             'tag',
@@ -77,6 +91,13 @@ class PostDetailSerializer(serializers.ModelSerializer):
     def get_posted_by(self, obj):
         return obj.user.username
     
+    def get_thumbnail_img(self, obj):
+        request = self.context.get('request')
+
+        if obj.thumbnail:
+            return request.build_absolute_uri(obj.thumbnail.image.url)
+        return None
+    
 
 
 class PostCreateSerializer(serializers.ModelSerializer):
@@ -91,31 +112,21 @@ class PostCreateSerializer(serializers.ModelSerializer):
             'description',
             'tag',
             'category',
-            'created_at',
-            'updated_at',
             'meta_title',
             'meta_description',
             'slug',
+            'related_article',
         ]
-        read_only_fields = ['user']
-
+    
     def create(self, validated_data):
-        request = self.context.get('request')
-        validated_data['user'] = request.user
 
-        tag_payload = validated_data['tag']
-        category_payload = validated_data['category']
-        tags = []
+        tags = validated_data.pop('tag', [])
+        related_articles = validated_data.pop('related_article', [])
 
-        for tag in tag_payload:
-            tag_instance = Tag.objects.create(
-                name=tag
-            )
-            tags.append(tag_instance)
+        with transaction.atomic():
+            post = Post.objects.create(**validated_data)
+            post.tag.set(tags)
+            post.related_article.set(related_articles)
+            post.save()
 
-        validated_data['tag'] = tags
-        category_instance = SubSubCategory.objects.get(category_payload)
-        validated_data['category'] = category_instance
-
-        return super().create(validated_data)
-       
+        return post

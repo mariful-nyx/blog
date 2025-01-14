@@ -1,9 +1,8 @@
-from bpm.tag.api.v1.view import TagViewSet
 from rest_framework.routers import DefaultRouter
+from bpm.filemanager.api.v1.views import ImageViewSet
 
 router = DefaultRouter()
 
-router.register(r'tags', TagViewSet)
+router.register(r'images', ImageViewSet)
 
 urlpatterns = router.urls
-
