@@ -13,6 +13,28 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from datetime import timedelta
+import environ
+
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
+def get_env_var(key, default=None, var_type=str):
+    value = os.getenv(key)
+    if value is None:
+        if default is not None:
+            return default
+        else:
+            raise ValueError(f"Environment variable '{key}' is missing, and no default value is provided.")
+    if var_type == int:
+        return int(value)
+    if var_type == bool:
+        return value.lower() in ["true", "1", "yes"]
+    if var_type == list:
+        return [item.strip() for item in value.split(",") if item.strip()]
+    return value
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -22,10 +44,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a(#j+x199*lkeh&6@par6wf!%^0v1et5tks*ml_n74r8p1yi7('
+SECRET_KEY = get_env_var('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = get_env_var('DEBUG')
 
 ALLOWED_HOSTS = [".vercel.app", ".now.sh", "127.0.0.1"]
 
@@ -127,11 +149,11 @@ SIMPLE_JWT = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',  # Database name
-        'USER': 'postgres.csqojkgzbyrbufbtsdgh',  # Database user
-        'PASSWORD': 'Nf$g69Q7x8tCyyq',  # Database password
-        'HOST': 'aws-0-us-east-1.pooler.supabase.com',  # Supabase Host
-        'PORT': '6543',  # Default PostgreSQL port
+        'NAME': get_env_var('DB_NAME'),  # Database name
+        'USER': get_env_var('DB_USER'),  # Database user
+        'PASSWORD': get_env_var('DB_PASSWORD'),  # Database password
+        'HOST': get_env_var('DB_HOST'),  # Supabase Host
+        'PORT': get_env_var('DB_PORT'),  # Default PostgreSQL port
     }
 }
 
@@ -176,7 +198,7 @@ STATICFILES_DIRS = [
         os.path.join(BASE_DIR, 'static')
 ]
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
