@@ -63,6 +63,7 @@ THIRD_PARTY_APPS = [
 INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
@@ -73,7 +74,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 ROOT_URLCONF = 'bpm.urls'
 
@@ -125,8 +126,12 @@ SIMPLE_JWT = {
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',  # Database name
+        'USER': 'postgres.csqojkgzbyrbufbtsdgh',  # Database user
+        'PASSWORD': 'Nf$g69Q7x8tCyyq',  # Database password
+        'HOST': 'aws-0-us-east-1.pooler.supabase.com',  # Supabase Host
+        'PORT': '6543',  # Default PostgreSQL port
     }
 }
 
