@@ -5,12 +5,18 @@
       "src": "bpm/wsgi.py",
       "use": "@vercel/python",
       "config": {
-        "maxDuration": 10,
         "maxLambdaSize": "15mb",
-        "runtime": "python3.12",
-        "buildCommand": "bash setup.sh"
+        "runtime": "python3.12"
       }
-    }
+    },
+      {
+        "src": "setup.sh",
+        "use":"@vercel/static-build",
+        "config": {
+          "distDir": "staticfiles"
+        }
+      }
+    
   ],
   "routes": [
     {
