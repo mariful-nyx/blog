@@ -38,6 +38,7 @@ class UserSerializer(serializers.ModelSerializer):
 class UserDetailSerializer(serializers.ModelSerializer):
     posts = PostSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
+    avatar_preview = serializers.SerializerMethodField()
     
     class Meta:
         model = User
@@ -48,6 +49,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "avater",
+            "avatar_preview",
             "is_staff",
             "is_active",
             "date_joined",
@@ -60,6 +62,11 @@ class UserDetailSerializer(serializers.ModelSerializer):
             "profession",
             "university"
         ]
+    
+    def get_avatar_preview(self, obj):
+        if obj.avater:
+            return obj.avater.image
+        return None
 
 
 class SignUpSerializer(serializers.ModelSerializer):
