@@ -95,7 +95,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         if obj.thumbnail:
-            return obj.thumbnail.image.url
+            return obj.thumbnail.image
         return None
     
 
