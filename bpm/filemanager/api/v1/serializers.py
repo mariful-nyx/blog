@@ -8,3 +8,9 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = '__all__'
     
+
+class ImageCreateSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField()
+    class Meta:
+        model = Image
+        fields = '__all__'

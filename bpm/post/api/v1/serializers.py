@@ -35,7 +35,7 @@ class PostSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         if obj.thumbnail:
-            return request.build_absolute_uri(obj.thumbnail.image.url)
+            return obj.thumbnail.image
         return None
 
 
@@ -95,7 +95,7 @@ class PostDetailSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         if obj.thumbnail:
-            return request.build_absolute_uri(obj.thumbnail.image.url)
+            return obj.thumbnail.image.url
         return None
     
 

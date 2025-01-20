@@ -80,6 +80,7 @@ THIRD_PARTY_APPS = [
     'drf_yasg',
     'django_filters',
     'rest_framework_simplejwt',
+    'storages'
 ]
 
 INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
@@ -157,6 +158,13 @@ DATABASES = {
 }
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
@@ -198,8 +206,7 @@ STATICFILES_DIRS = os.path.join(BASE_DIR, 'static'),
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles_build', 'static')
 
 
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'static/media')
+
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -230,3 +237,4 @@ CORS_ALLOW_CREDENTIALS = True
 # settings.py
 SUPABASE_URL = get_env_var('SUPABASE_URL')
 SUPABASE_KEY = get_env_var('SUPABASE_KEY')
+

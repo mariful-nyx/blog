@@ -4,7 +4,7 @@ from django.db import models
 
 
 class Image(models.Model):
-    image = models.ImageField(upload_to='thumbnail')
+    image = models.URLField()
     image_alt_text = models.CharField(max_length=255)
 
     def __str__(self):
