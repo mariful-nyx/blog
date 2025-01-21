@@ -8,7 +8,7 @@ from bpm.comment.api.v1.serializer import CommentSerializer
 class UserSerializer(serializers.ModelSerializer):
     posts = serializers.SerializerMethodField()
     comments = serializers.SerializerMethodField()
-
+    avatar_preview = serializers.SerializerMethodField()
     
     class Meta:
         model = User
@@ -19,6 +19,7 @@ class UserSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "avater",
+            "avatar_preview",
             "date_joined",
             "role",
             "posts",
@@ -34,6 +35,11 @@ class UserSerializer(serializers.ModelSerializer):
     def get_comments(self, obj):
         return obj.comments.count()
 
+    def get_avatar_preview(self, obj):
+        if obj.avater:
+            return obj.avater.image
+        return None
+    
 
 class UserDetailSerializer(serializers.ModelSerializer):
     posts = PostSerializer(many=True, read_only=True)
